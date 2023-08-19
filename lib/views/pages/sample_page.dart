@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:single_scroll_view_test/views/organisms/scsv_sv.dart';
-import 'package:single_scroll_view_test/views/organisms/sv_scsv.dart';
+import 'package:single_scroll_view_test/views/organisms/lv_scsv.dart';
+import 'package:single_scroll_view_test/views/organisms/scsv_lv.dart';
 
 import '../atoms/input_field_with_label.dart';
+import '../organisms/lv_lv.dart';
 import '../organisms/scsv_scsv.dart';
-import '../organisms/sv_sv.dart';
 
 class SamplePage extends HookWidget {
   const SamplePage({super.key});
@@ -31,19 +31,19 @@ class SamplePage extends HookWidget {
         rowCount: rowCount.value,
         columnCount: columnCount.value,
       ),
-      "↕️SCSV & ↔️SV": ScsvSv(
+      "↕️SCSV & ↔️LV": ScsvLv(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
         columnCount: columnCount.value,
       ),
-      "↕️SV & ↔️SCSV": SvScsv(
+      "↕️LV & ↔️SCSV": LvScsv(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
         columnCount: columnCount.value,
       ),
-      "↕️SV & ↔️SV": SvSv(
+      "↕️LV & ↔️LV": LvLv(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
@@ -62,7 +62,7 @@ class SamplePage extends HookWidget {
       length: widgetList.length,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("SingleChildScrollView vs ScrollView"),
+          title: const Text("SingleChildScrollView vs ListView"),
           centerTitle: false,
           actions: [
             InputFieldWithLabel(

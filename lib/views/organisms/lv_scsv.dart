@@ -4,8 +4,8 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../atoms/block.dart';
 
-class SvScsv extends HookWidget {
-  const SvScsv({
+class LvScsv extends HookWidget {
+  const LvScsv({
     super.key,
     required this.blockWidth,
     required this.blockHeight,

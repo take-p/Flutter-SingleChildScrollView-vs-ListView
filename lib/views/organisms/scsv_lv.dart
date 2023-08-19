@@ -4,8 +4,8 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../atoms/block.dart';
 
-class ScsvSv extends HookWidget {
-  const ScsvSv({
+class ScsvLv extends HookWidget {
+  const ScsvLv({
     super.key,
     required this.blockWidth,
     required this.blockHeight,
