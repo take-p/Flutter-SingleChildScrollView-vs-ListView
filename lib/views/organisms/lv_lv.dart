@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
@@ -26,30 +26,33 @@ class LvLv extends HookWidget {
       controllerList.add(useState(horizontalControllers.value.addAndGet()));
     }
 
-    return ListView.builder(
-      itemCount: rowCount,
-      itemBuilder: (context, index) {
-        return SizedBox(
-          height: blockHeight,
-          child: ListView.builder(
-            controller: controllerList[index].value,
-            scrollDirection: Axis.horizontal,
-            itemCount: columnCount,
-            itemBuilder: (context, columnIndex) {
-              return SizedBox(
-                width: blockWidth,
-                height: blockHeight,
-                child: Block(
-                  width: blockWidth,
-                  height: blockHeight,
-                  x: columnIndex / columnCount,
-                  y: index / rowCount,
-                ),
-              );
-            },
+    return ListView(
+      children: [
+        for (int i = 0; i < rowCount; i++) ...[
+          SizedBox(
+            height: blockHeight,
+            child: ListView(
+              controller: controllerList[i].value,
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (int j = 0; j < columnCount; j++) ...[
+                  SizedBox(
+                    width: blockWidth,
+                    height: blockHeight,
+                    child: Block(
+                      width: blockWidth,
+                      height: blockHeight,
+                      x: j / columnCount,
+                      y: i / rowCount,
+                      text: "$i-$j",
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ],
     );
   }
 }

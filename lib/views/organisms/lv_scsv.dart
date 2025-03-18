@@ -40,6 +40,7 @@ class LvScsv extends HookWidget {
                     height: blockHeight,
                     x: j / columnCount,
                     y: i / rowCount,
+                    text: "$i-$j",
                   ),
               ],
             ),

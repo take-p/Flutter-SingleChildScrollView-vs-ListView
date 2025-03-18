@@ -46,6 +46,7 @@ class ScsvLv extends HookWidget {
                       height: blockHeight,
                       x: columnIndex / columnCount,
                       y: i / rowCount,
+                      text: "$i-$columnIndex",
                     ),
                   );
                 },

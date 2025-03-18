@@ -35,6 +35,7 @@ class ScsvScsv extends StatelessWidget {
                           height: blockHeight,
                           x: j / columnCount,
                           y: i / rowCount,
+                          text: "$i-$j",
                         ),
                     ],
                   ),

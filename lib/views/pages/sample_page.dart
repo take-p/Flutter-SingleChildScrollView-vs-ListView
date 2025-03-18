@@ -1,21 +1,42 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:single_scroll_view_test/views/organisms/lv_lv.dart';
 import 'package:single_scroll_view_test/views/organisms/lv_scsv.dart';
 import 'package:single_scroll_view_test/views/organisms/scsv_lv.dart';
 
+import '../../providers/memory_usage_provider.dart';
 import '../atoms/input_field_with_label.dart';
-import '../organisms/lv_lv.dart';
+import '../organisms/lvb_lvb.dart';
 import '../organisms/scsv_scsv.dart';
 
-class SamplePage extends HookWidget {
+class SamplePage extends HookConsumerWidget {
   const SamplePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emoryUsage = ref.watch(memoryUsageProvider);
+    final memoryUsageNotifier = ref.watch(memoryUsageProvider.notifier);
+
+    // 定期的にメモリ使用量を取得するためのタイマーを設定
+    useEffect(() {
+      Timer.periodic(const Duration(seconds: 1), (timer) async {
+        final memoryInfo = await developer.Service.getInfo();
+        final rss = (ProcessInfo.currentRss / 1000 / 1000)
+            .toInt(); // 現在のメモリ使用量 (Resident Set Size)
+        memoryUsageNotifier.state = 'RSS ${rss} MB';
+      });
+      return null; // ウィジェットが破棄された際のクリーンアップは不要
+    }, []);
+
     final visible = useState(true);
 
-    final blockWidth = useState(32.0);
-    final blockHeight = useState(32.0);
+    final blockWidth = useState(64.0);
+    final blockHeight = useState(64.0);
     final rowCount = useState(100);
     final columnCount = useState(100);
 
@@ -25,13 +46,13 @@ class SamplePage extends HookWidget {
     final columnCountBuffer = useState(columnCount.value);
 
     final Map<String, Widget> widgetList = {
-      "↕️SCSV & ↔️SCSV": ScsvScsv(
+      "↕️LV.b & ↔️LV.b": LvbLvb(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
         columnCount: columnCount.value,
       ),
-      "↕️SCSV & ↔️LV": ScsvLv(
+      "↕️LV & ↔️LV": LvLv(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
@@ -43,7 +64,13 @@ class SamplePage extends HookWidget {
         rowCount: rowCount.value,
         columnCount: columnCount.value,
       ),
-      "↕️LV & ↔️LV": LvLv(
+      "↕️SCSV & ↔️LV": ScsvLv(
+        blockWidth: blockWidth.value,
+        blockHeight: blockHeight.value,
+        rowCount: rowCount.value,
+        columnCount: columnCount.value,
+      ),
+      "↕️SCSV & ↔️SCSV": ScsvScsv(
         blockWidth: blockWidth.value,
         blockHeight: blockHeight.value,
         rowCount: rowCount.value,
@@ -65,9 +92,11 @@ class SamplePage extends HookWidget {
           title: const Text("SingleChildScrollView vs ListView"),
           centerTitle: false,
           actions: [
+            Text(emoryUsage),
+            const SizedBox(width: 20),
             InputFieldWithLabel(
               label: "Block width",
-              initialValue: "32",
+              initialValue: "${blockWidth.value.toInt()}",
               onChanged: (value) {
                 blockWidthBuffer.value = double.parse(value);
               },
@@ -79,7 +108,7 @@ class SamplePage extends HookWidget {
             const SizedBox(width: 20),
             InputFieldWithLabel(
               label: "Block height",
-              initialValue: "32",
+              initialValue: "${blockHeight.value.toInt()}",
               onChanged: (value) {
                 blockHeightBuffer.value = double.parse(value);
               },
